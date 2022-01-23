@@ -1,0 +1,19 @@
+#!/bin/bash -e
+
+cd $(dirname $0)
+
+# Note: cloning a 'git:...' URL would require setting fingerprint validation within Docker (as ssh is involved).
+git clone https://github.com/AprilRobotics/apriltag.git
+cd apriltag
+
+# See https://github.com/AprilRobotics/apriltag/tags for latest tag.
+git -c advice.detachedHead=false checkout v3.1.7
+
+cmake .
+make install
+
+# apriltag installs to /usr/local/lib so tell the dynamic linker to search here (it doesn't by default).
+ldconfig /usr/local/lib
+
+cd ..
+rm -r apriltag

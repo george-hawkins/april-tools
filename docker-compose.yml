@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  hirsute-apriltools:
+    user: $UID:$GID
+    build:
+      context: .
+      args:
+        uid: $UID
+        workspace: /var/tmp/workspace
+    volumes:
+      - .:/var/tmp/workspace

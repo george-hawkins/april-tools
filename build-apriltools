@@ -1,0 +1,10 @@
+#!/bin/bash -e
+
+cd $(dirname $0)
+
+# The AprilTools repo contain a lot of extraneous stuff - we just need AprilTools.cc
+# All the core functionality is actually being provided by AprilTag and OpenCV.
+
+curl -s -O https://raw.githubusercontent.com/thegoodhen/AprilTools/master/AprilTools.cc
+g++ -w -o /usr/local/bin/apriltools -I/usr/local/include/apriltag $(pkg-config --cflags opencv4) AprilTools.cc $(pkg-config --libs apriltag) $(pkg-config --libs opencv4)
+rm AprilTools.cc
