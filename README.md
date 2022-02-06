@@ -383,7 +383,7 @@ The following three videos are in [this playlist](https://youtube.com/playlist?l
 * With render: <https://youtu.be/gmFCcowbJeM>
 * Stabilized: <https://youtu.be/MX-awaTFAFw>
 
-**Update:** repeated, stabilized and with off-by-one issue cleaned up: <https://youtu.be/l5_J1G1ynp0>
+**Update:** off-by-one issue fixed, thick painting, shadow catcher, repeated and stabilized: <https://youtu.be/580qmwuwO7I>
 
 The stabilization was done with and dramatically reduces apparent shake:
 
