@@ -358,6 +358,22 @@ If you don't like that the texture "streaks" at the sides then there various app
 
 The whole issue with smooth shading and edges seems to provoke no end of confusion, for further approaches, see this StackExchange [answer](https://blender.stackexchange.com/a/23597/124535).
 
+Shadow catcher
+--------------
+
+With a thick painting, a shadow catcher becomes essential so that it doesn't look like it's just floating.
+
+So add a plane and size it to be e.g. 300x400mm, go to its _Object_ properties, expand _Visibility_ and tick _Shadow Catcher_.
+
+Issue with shader approach to thickness
+---------------------------------------
+
+In the end, I could sort of get things working with a node setup like this:
+
+![img.png](images/node-thickness.png)
+
+But it was all a bit confusing - the fine details of the image texture and the coarse detail of the noise texture interacted in strange ways and I never really understood what I was doing when adjusting the _Map Range_ to get the rendered image to stay within its mesh bounds. Things seemed much simpler with the modifier approach.
+
 Results
 -------
 
@@ -375,4 +391,15 @@ The stabilization was done with and dramatically reduces apparent shake:
 $ input=result-standard-percep-slow.mkv 
 $ ffmpeg -i $input -vf vidstabdetect -f null -
 $ ffmpeg -i $input -vf vidstabtransform,unsharp=5:5:0.8:3:3:0.4 -c:v libx264 -preset slow -crf 22 stable_$input
+```
+
+To loop the sequence back and forward, I did:
+
+```
+$ count=141
+$ mkdir repeat
+$ j=1; for i in *.png; do cp $i repeat/$j.png; let j++; done
+$ let j=(count * 2); for i in *.png; do cp $i repeat/$j.png; let j--; done
+$ let j=(count * 2 + 1); for i in *.png; do cp $i repeat/$j.png; let j++; done
+$ let j=(count * 4); for i in *.png; do cp $i repeat/$j.png; let j--; done
 ```
