@@ -315,6 +315,49 @@ The result is an impressive set of additional nodes:
 
 ![img.png](images/texture-setup.png)
 
+Canvas with thickness
+---------------------
+
+Adding some thickness and unevenness to the canvas, so that it didn't appear like a thin film stuck to the table, nearly killed me.
+
+First I had to ask the interaction between the solidify modifier and displacement [here](https://blender.stackexchange.com/q/252449/124535) and then about solidify and bulging [here](https://blender.stackexchange.com/q/252991/124535).
+
+The [answer](https://blender.stackexchange.com/a/252482/124535) to my first question includes two approaches - one involving modifiers and one involving the shader. The second resulted in weird artifacts when I tried to combine the suggested pipeline of noise related nodes with my height map. However, the first one with modifiers worked out.
+
+Speed run:
+
+* _New / General_.
+* Delete cube.
+* _Import / Images as Plane_, select `saint-cropped.png`, untick _Use Alpha_, set its height to 297mm (A4) and import.
+* `Numpad-7` and `r90` and then `Numpad-3` and `r90` again to lay flat. Or pop out the sidebar and set the x and x rotation values to 0.
+* Go to _Rendered_ shading and change renderer to _Cycles_ (with _GPU Compute_ of course).
+* `Numpad-0` and get the plane nicely lined up for the camera.
+* If you did any scaling etc. of the plane, do _Object / Apply / All Transforms_ or things can get very strange later.
+* Go to the _Shading_ workspace, get things set up again with _Rendered_ shading and camera view.
+* Select the _Principled BSDF_ node, `ctrl-shift-T` (with Node Wrangler enabled) and select height and normal maps.
+* Add in a _Subdivision_ modifier, set it to _Simple_ and set the _Levels_ to 3 and 4 for _Viewport_ and _Render_ respectively. To see the subdivisions introduced as you bump the viewport value, untick _Optimal Display_ and flip to _Wireframe_ shading.
+* Add in a _Displace_ modifier - rather confusingly, the plane disappears. Click _New_ to add a new texture (the plane reappears way below its previous position).
+* Switch to _Texture_ properties, and for the new texture, switch its type from _Image or Movie_ to _Voronoi_ (or whatever you prefer). The plane becomes wildly distorted. **Note:** unlike other methods, this does not require going to the _Settings_ section of the material and setting _Displacement_ to _Displacement and Bump_ - it can be left as it is as _Bump Only_. And unlike other approaches, you can see this displacement no matter what the _Viewport Shading_, i.e. it does not have to be _Redendered_ with _Cycles_.
+* Go back to the _Displace_ modifier and dial down the _Strength_ to 0.003 - it's almost unnoticeable now unless you look side on look carefully. But the same would be true for a thick piece of flat card so this is what we want.
+* Now, add the _Solidy_ modifier and adjust the thickness to 2mm.
+* The displacement here is so small that setting _Shade Smooth_ is unnecessary - setting _Shade Smooth_ introduces new problems (which is what my second question above was about). But let's do it just to address those problems...
+* Up the _Strength_ to e.g. 0.04 so you can see the _Shade Flat_ issues, then _Shade Smooth_. The plane should appear to bulge up oddly near the edges.
+* Tab into _Edit Mode_ and (with everything still selected), go to _Edge_ and select _Mark Sharp_. Note: when you're in _Edit Mode_ the displacement disappears.
+* Tab back into _Object Mode_ and dial the strength back down to 0.003.
+* Done. Save the file.
+
+To pull this new asset into another Blender file:
+
+* Open the other `.blend` file.
+* Go to _File / Append_ and select the `.blend` file with the the plane constructed above and click _Append_.
+* Navigate to _Object_ and select the required object (this will also pull in the required textures etc).
+
+That's it. Line it up, you'll need to do a little extra rotation to get it to look like it's lying flat due to the added distortion.
+
+If you don't like that the texture "streaks" at the sides then there various approaches to addressing this on the Blender StackExchange. It looks like the easiest thing is to apply the _Solidify_ modifier and just work with the separate faces as described [here](https://blender.stackexchange.com/a/220357/124535), i.e. work it all out in UV unwrapping. But it may be possible to do smarter things using the solidify modifier's _Materials_ sections as described [here](https://www.youtube.com/watch?v=UcBtvpwmcuQ&t=324s) (5m 24s into BlenderDiplom's video "The Solidify Modifier's big update in Blender 2.93").
+
+The whole issue with smooth shading and edges seems to provoke no end of confusion, for further approaches, see this StackExchange [answer](https://blender.stackexchange.com/a/23597/124535).
+
 Results
 -------
 
