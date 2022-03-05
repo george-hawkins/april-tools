@@ -163,7 +163,7 @@ If you don't fix this now, it'll cause you no end of pain later. You can do one 
 * Simply adjust the _Start_ value from 1 to 0 and similarly reduce the _End_ value by 1.
 * Or go to the _Object Data_ properties for the camera, expand the _Background Images_ section and change the _Start_ value from 0 to 1, then go to the _Timeline_, press `a` to select all the keyframes and drag them forward 1 frame.
 
-The second option sounds more complicated but life is just easier in Blender if your timeline starts at 0 rather than 1.
+The second option sounds more complicated but life is just easier in Blender if your timeline starts at 1 rather than 0.
 
 ---
 
